@@ -14,6 +14,14 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
+    - name: App Settings Variable Substitution
+      uses: microsoft/variable-substitution@v1
+      with:
+        files: '${{env.WORKING_DIRECTORY}}/appsettings.json'
+      env:
+        ConnectionStrings.MongoDB: ${{ secrets.MONGODB_CONNECTION_STRING }}
+        AzureAdB2C.ClientId: ${{ secrets.AZURE_AD_CLIENTID }}
+        AzureAdB2C.Instance: ${{ secrets.AZURE_AD_INSTANCE }}
     - name: Setup .NET Core
       uses: actions/setup-dotnet@v1
       with:
