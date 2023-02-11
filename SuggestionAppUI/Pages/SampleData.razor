@@ -1,11 +1,13 @@
 ﻿@page "/SampleData"
 @inject ICategoryData categoryData
 @inject IStatusData statusData
+@inject IConfiguration configuration
+
 <h3>Sample Data</h3>
 
 @if (categoriesCreated)
 {
-    <h4>Categoried have been created</h4>
+    <h4>Categoried have been created @GetAzureADSection() </h4>
 }
 else
 {
@@ -90,4 +92,16 @@ else
         await statusData.CreateStatus(stat);
         statusesCreated = true;
     }
+
+    private string GetAzureADSection()
+    {
+        var azureADSection = configuration.GetSection("AzureAd");
+        var clientId = azureADSection["ClientId"];
+        var tenantId = azureADSection["TenantId"];
+        var clientSecret = azureADSection["ClientSecret"];
+
+        var fullString = $"ClientId: {clientId}, TenantId: {tenantId}, ClientSecret: {clientSecret}";
+        return fullString;
+    }
+}
 }
